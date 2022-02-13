@@ -283,8 +283,8 @@ class _CalendarState extends State<Calendar> {
         icon: Icon(Icons.chevron_right),
       );
     } else {
-      leftArrow = Spacer();
-      rightArrow = Spacer();
+      leftArrow = Container();
+      rightArrow = Container();
     }
 
     if (!widget.hideTodayIcon) {
@@ -298,9 +298,9 @@ class _CalendarState extends State<Calendar> {
 
     if (widget.datePickerType != null &&
         widget.datePickerType != DatePickerType.hidden) {
-      jumpDateIcon = InkWell(
-        child: Icon(Icons.date_range_outlined),
-        onTap: () {
+      jumpDateIcon = IconButton(
+        icon: Icon(Icons.date_range_outlined),
+        onPressed: () {
           if (widget.datePickerType == DatePickerType.year) {
             // show year picker
             showDialog(
@@ -373,7 +373,7 @@ class _CalendarState extends State<Calendar> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        leftArrow ?? Spacer(),
+        leftArrow ?? Container(),
         Expanded(
           child: Column(
             children: <Widget>[
@@ -388,8 +388,8 @@ class _CalendarState extends State<Calendar> {
             ],
           ),
         ),
-        jumpDateIcon ?? Spacer(),
-        rightArrow ?? Spacer(),
+        jumpDateIcon ?? Container(),
+        rightArrow ?? Container(),
       ],
     );
   }
