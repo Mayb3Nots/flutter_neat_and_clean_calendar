@@ -118,7 +118,7 @@ class Calendar extends StatefulWidget {
 
   /// Configures the date picker if enabled
   final DatePickerConfig? datePickerConfig;
-  final Widget Function(Function)? todayWidgetBuilder;
+  final Widget Function(void Function())? todayWidgetBuilder;
 
   Calendar({
     this.onMonthChanged,
