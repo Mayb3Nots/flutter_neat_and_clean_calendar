@@ -370,11 +370,17 @@ class _CalendarState extends State<Calendar> {
       jumpDateIcon = Container();
     }
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Stack(
       children: [
-        leftArrow ?? Container(),
-        Expanded(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            leftArrow ?? Container(),
+            jumpDateIcon ?? Container(),
+            rightArrow ?? Container(),
+          ],
+        ),
+        Center(
           child: Column(
             children: <Widget>[
               todayIcon ?? Container(),
@@ -388,8 +394,6 @@ class _CalendarState extends State<Calendar> {
             ],
           ),
         ),
-        jumpDateIcon ?? Container(),
-        rightArrow ?? Container(),
       ],
     );
   }
