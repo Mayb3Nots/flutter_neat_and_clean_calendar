@@ -373,7 +373,7 @@ class _CalendarState extends State<Calendar> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        leftArrow ?? Container(),
+        leftArrow ?? Spacer(),
         Expanded(
           child: Column(
             children: <Widget>[
@@ -388,8 +388,8 @@ class _CalendarState extends State<Calendar> {
             ],
           ),
         ),
-        jumpDateIcon ?? Container(),
-        rightArrow ?? Container(),
+        jumpDateIcon ?? Spacer(),
+        rightArrow ?? Spacer(),
       ],
     );
   }
