@@ -118,6 +118,7 @@ class Calendar extends StatefulWidget {
 
   /// Configures the date picker if enabled
   final DatePickerConfig? datePickerConfig;
+  final Widget Function(Function)? todayWidgetBuilder;
 
   Calendar({
     this.onMonthChanged,
@@ -153,6 +154,7 @@ class Calendar extends StatefulWidget {
     this.expandableDateFormat = 'EEEE MMMM dd, yyyy',
     this.displayMonthTextStyle,
     this.datePickerConfig,
+    this.todayWidgetBuilder,
   });
 
   @override
@@ -288,10 +290,14 @@ class _CalendarState extends State<Calendar> {
     }
 
     if (!widget.hideTodayIcon) {
-      todayIcon = InkWell(
-        child: Text(widget.todayButtonText),
-        onTap: resetToToday,
-      );
+      if (widget.todayWidgetBuilder != null) {
+        todayIcon = widget.todayWidgetBuilder!(resetToToday);
+      } else {
+        todayIcon = InkWell(
+          child: Text(widget.todayButtonText),
+          onTap: resetToToday,
+        );
+      }
     } else {
       todayIcon = Container();
     }
@@ -370,20 +376,14 @@ class _CalendarState extends State<Calendar> {
       jumpDateIcon = Container();
     }
 
-    return Stack(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            leftArrow ?? Container(),
-            jumpDateIcon ?? Container(),
-            rightArrow ?? Container(),
-          ],
-        ),
-        Center(
+        leftArrow ?? Container(),
+        todayIcon ?? Container(),
+        Expanded(
           child: Column(
             children: <Widget>[
-              todayIcon ?? Container(),
               Text(
                 displayMonth.toUpperCase(),
                 style: widget.displayMonthTextStyle ??
@@ -394,6 +394,8 @@ class _CalendarState extends State<Calendar> {
             ],
           ),
         ),
+        jumpDateIcon ?? Container(),
+        rightArrow ?? Container(),
       ],
     );
   }
