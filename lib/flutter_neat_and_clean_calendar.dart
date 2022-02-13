@@ -283,8 +283,8 @@ class _CalendarState extends State<Calendar> {
         icon: Icon(Icons.chevron_right),
       );
     } else {
-      leftArrow = Container();
-      rightArrow = Container();
+      leftArrow = Spacer();
+      rightArrow = Spacer();
     }
 
     if (!widget.hideTodayIcon) {
