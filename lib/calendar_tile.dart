@@ -107,7 +107,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
                       fontSize: 14.0,
                       fontWeight: FontWeight.w400,
                       color: isSelected && this.date != null
-                          ? Theme.of(context).colorScheme.onBackground
+                          ? Theme.of(context).colorScheme.onPrimary
                           : Utils.isSameDay(this.date!, DateTime.now())
                               ? todayColor
                               : inMonth
