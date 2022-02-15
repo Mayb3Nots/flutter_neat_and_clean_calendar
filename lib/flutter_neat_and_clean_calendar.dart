@@ -716,19 +716,20 @@ class _CalendarState extends State<Calendar> {
       });
     }
     return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        
-        children: <Widget>[
-          nameAndIconRow,
-          ExpansionCrossFade(
-            collapsed: calendarGridView,
-            expanded: calendarGridView,
-            isExpanded: isExpanded,
-          ),
-          expansionButtonRow,
-          eventList
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            nameAndIconRow,
+            ExpansionCrossFade(
+              collapsed: calendarGridView,
+              expanded: calendarGridView,
+              isExpanded: isExpanded,
+            ),
+            expansionButtonRow,
+            eventList
+          ],
+        ),
       ),
     );
   }
