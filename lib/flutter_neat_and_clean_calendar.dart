@@ -718,7 +718,7 @@ class _CalendarState extends State<Calendar> {
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
+        
         children: <Widget>[
           nameAndIconRow,
           ExpansionCrossFade(
