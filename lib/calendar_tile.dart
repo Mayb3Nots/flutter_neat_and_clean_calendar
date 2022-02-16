@@ -82,7 +82,9 @@ class NeatCleanCalendarTile extends StatelessWidget {
       // Every date tile can show up to three dots representing an event.
       int eventCount = 0;
       return InkWell(
-        onTap: disabled ? null : onDateSelected, // react on tapping
+        onTap: disabled && !Utils.isSameDay(this.date!, DateTime.now())
+            ? null
+            : onDateSelected, // react on tapping
         child: Padding(
           padding: const EdgeInsets.all(1.0),
           child: Container(
