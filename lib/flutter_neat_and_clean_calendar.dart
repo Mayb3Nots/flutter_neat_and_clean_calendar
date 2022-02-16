@@ -121,7 +121,7 @@ class Calendar extends StatefulWidget {
   final Widget Function(void Function())? todayWidgetBuilder;
 
   /// Disable all date before device's current time.
-  final bool? disableBeforeToday;
+  final bool disableBeforeToday;
 
   /// Sets all dates to disable before the given date.
   final DateTime? disableBeforeDate;
@@ -160,7 +160,7 @@ class Calendar extends StatefulWidget {
     this.displayMonthTextStyle,
     this.datePickerConfig,
     this.todayWidgetBuilder,
-    this.disableBeforeToday,
+    this.disableBeforeToday = false,
     this.disableBeforeDate,
   });
 
@@ -776,7 +776,9 @@ class _CalendarState extends State<Calendar> {
         .isBefore(DateTime(dateTime.year, dateTime.month))) return;
     setState(() {
       _selectedDate = Utils.previousMonth(_selectedDate);
-      var firstDateOfNewMonth = Utils.firstDayOfMonth(_selectedDate);
+      var firstDateOfNewMonth = widget.disableBeforeToday
+          ? dateTime
+          : Utils.firstDayOfMonth(_selectedDate);
       var lastDateOfNewMonth = Utils.lastDayOfMonth(_selectedDate);
       updateSelectedRange(firstDateOfNewMonth, lastDateOfNewMonth);
       selectedMonthsDays = _daysInMonth(_selectedDate);
