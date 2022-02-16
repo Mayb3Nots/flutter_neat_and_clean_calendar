@@ -778,9 +778,11 @@ class _CalendarState extends State<Calendar> {
       _selectedDate = Utils.previousMonth(_selectedDate);
       var firstDateOfNewMonth = Utils.firstDayOfMonth(_selectedDate);
       if (widget.disableBeforeToday) {
+        int i = 0;
         while (firstDateOfNewMonth.isBefore(dateTime)) {
+          i++;
           firstDateOfNewMonth =
-              Utils.firstDayOfMonth(_selectedDate).add(const Duration(days: 1));
+              Utils.firstDayOfMonth(_selectedDate).add(Duration(days: i));
         }
       }
 
@@ -826,9 +828,11 @@ class _CalendarState extends State<Calendar> {
       _selectedDate = Utils.previousWeek(_selectedDate);
       var firstDayOfCurrentWeek = _firstDayOfWeek(_selectedDate);
       if (widget.disableBeforeToday) {
+        int i = 0;
         while (firstDayOfCurrentWeek.isBefore(dateTime)) {
+          i++;
           firstDayOfCurrentWeek =
-              _firstDayOfWeek(_selectedDate.add(const Duration(days: 7)));
+              _firstDayOfWeek(_selectedDate.add(Duration(days: 7 * i)));
         }
       }
       var lastDayOfCurrentWeek = _lastDayOfWeek(_selectedDate);
