@@ -814,9 +814,18 @@ class _CalendarState extends State<Calendar> {
   }
 
   void previousWeek() {
+    final dateTime = widget.disableBeforeDate ?? DateTime.now();
+    if (Utils.previousWeek(_selectedDate)
+        .isBefore(DateTime(dateTime.year, dateTime.month))) return;
     setState(() {
       _selectedDate = Utils.previousWeek(_selectedDate);
-      var firstDayOfCurrentWeek = _firstDayOfWeek(_selectedDate);
+      late var firstDayOfCurrentWeek;
+      if (widget.disableBeforeToday) {
+        while (_firstDayOfWeek(_selectedDate).isBefore(dateTime)) {
+          firstDayOfCurrentWeek =
+              _firstDayOfWeek(_selectedDate.add(const Duration(days: 1)));
+        }
+      }
       var lastDayOfCurrentWeek = _lastDayOfWeek(_selectedDate);
       updateSelectedRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek);
       selectedWeekDays =
@@ -949,7 +958,7 @@ class _CalendarState extends State<Calendar> {
     }
   }
 
-  _firstDayOfWeek(DateTime date) {
+  DateTime _firstDayOfWeek(DateTime date) {
     var day = DateTime.utc(
         _selectedDate.year, _selectedDate.month, _selectedDate.day, 12);
     if (widget.startOnMonday == true) {
