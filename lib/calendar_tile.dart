@@ -40,6 +40,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
   final Color? todayColor;
   final Color? eventColor;
   final Color? eventDoneColor;
+  final bool disabled;
 
   NeatCleanCalendarTile({
     this.onDateSelected,
@@ -56,6 +57,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
     this.todayColor,
     this.eventColor,
     this.eventDoneColor,
+    this.disabled = false,
   });
 
   /// This function [renderDateOrDayOfWeek] renders the week view or the month view. It is
@@ -80,7 +82,9 @@ class NeatCleanCalendarTile extends StatelessWidget {
       // Every date tile can show up to three dots representing an event.
       int eventCount = 0;
       return InkWell(
-        onTap: onDateSelected, // react on tapping
+        onTap: disabled && !Utils.isSameDay(this.date!, DateTime.now())
+            ? null
+            : onDateSelected, // react on tapping
         child: Padding(
           padding: const EdgeInsets.all(1.0),
           child: Container(
@@ -110,10 +114,14 @@ class NeatCleanCalendarTile extends StatelessWidget {
                           ? Theme.of(context).colorScheme.onPrimary
                           : Utils.isSameDay(this.date!, DateTime.now())
                               ? todayColor
-                              : inMonth
-                                  ? Theme.of(context).colorScheme.onBackground
-                                  : Colors
-                                      .grey), // Grey color for previous or next months dates
+                              : disabled
+                                  ? Colors.grey // Disabled
+                                  : inMonth
+                                      ? Theme.of(context)
+                                          .colorScheme
+                                          .onBackground
+                                      : Colors
+                                          .grey), // Grey color for previous or next months dates
                 ),
                 // Dots for the events
                 events != null && events!.length > 0
