@@ -120,6 +120,11 @@ class Calendar extends StatefulWidget {
   final DatePickerConfig? datePickerConfig;
   final Widget Function(void Function())? todayWidgetBuilder;
 
+  /// Disable all date before device's current time.
+  final bool? disableBeforeToday;
+
+  /// Sets all dates to disable before the given date.
+  final DateTime? disableBeforeDate;
   Calendar({
     this.onMonthChanged,
     this.onDateSelected,
@@ -155,6 +160,8 @@ class Calendar extends StatefulWidget {
     this.displayMonthTextStyle,
     this.datePickerConfig,
     this.todayWidgetBuilder,
+    this.disableBeforeToday,
+    this.disableBeforeDate,
   });
 
   @override
@@ -430,6 +437,7 @@ class _CalendarState extends State<Calendar> {
     List<Widget> dayWidgets = [];
     List<DateTime> calendarDays =
         isExpanded ? selectedMonthsDays : selectedWeekDays as List<DateTime>;
+    final dateTimeNow = DateTime.now();
     widget.weekDays.forEach(
       (day) {
         dayWidgets.add(
@@ -474,6 +482,7 @@ class _CalendarState extends State<Calendar> {
           // Use the dayBuilder widget passed as parameter to render the date tile
           dayWidgets.add(
             NeatCleanCalendarTile(
+              disabled: (widget.disableBeforeDate ?? dateTimeNow).isBefore(day),
               selectedColor: widget.selectedColor,
               todayColor: widget.todayColor,
               eventColor: widget.eventColor,
@@ -487,6 +496,8 @@ class _CalendarState extends State<Calendar> {
         } else {
           dayWidgets.add(
             NeatCleanCalendarTile(
+                disabled:
+                    (widget.disableBeforeDate ?? dateTimeNow).isBefore(day),
                 selectedColor: widget.selectedColor,
                 todayColor: widget.todayColor,
                 eventColor: widget.eventColor,
