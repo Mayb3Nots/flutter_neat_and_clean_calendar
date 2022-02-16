@@ -482,7 +482,7 @@ class _CalendarState extends State<Calendar> {
           // Use the dayBuilder widget passed as parameter to render the date tile
           dayWidgets.add(
             NeatCleanCalendarTile(
-              disabled: (widget.disableBeforeDate ?? dateTimeNow).isBefore(day),
+              disabled: (widget.disableBeforeDate ?? dateTimeNow).isAfter(day),
               selectedColor: widget.selectedColor,
               todayColor: widget.todayColor,
               eventColor: widget.eventColor,
@@ -497,7 +497,7 @@ class _CalendarState extends State<Calendar> {
           dayWidgets.add(
             NeatCleanCalendarTile(
                 disabled:
-                    (widget.disableBeforeDate ?? dateTimeNow).isBefore(day),
+                    (widget.disableBeforeDate ?? dateTimeNow).isAfter(day),
                 selectedColor: widget.selectedColor,
                 todayColor: widget.todayColor,
                 eventColor: widget.eventColor,
@@ -771,6 +771,8 @@ class _CalendarState extends State<Calendar> {
   }
 
   void previousMonth() {
+    if (Utils.previousMonth(_selectedDate)
+        .isAfter(widget.disableBeforeDate ?? DateTime.now())) return;
     setState(() {
       _selectedDate = Utils.previousMonth(_selectedDate);
       var firstDateOfNewMonth = Utils.firstDayOfMonth(_selectedDate);
