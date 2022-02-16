@@ -121,7 +121,7 @@ class Calendar extends StatefulWidget {
   final Widget Function(void Function())? todayWidgetBuilder;
 
   /// Disable all date before device's current time.
-  final bool disableBeforeToday;
+  final bool? disableBeforeToday;
 
   /// Sets all dates to disable before the given date.
   final DateTime? disableBeforeDate;
@@ -160,15 +160,9 @@ class Calendar extends StatefulWidget {
     this.displayMonthTextStyle,
     this.datePickerConfig,
     this.todayWidgetBuilder,
-    this.disableBeforeToday = false,
+    this.disableBeforeToday,
     this.disableBeforeDate,
-  }) : assert(() {
-          if (disableBeforeToday && disableBeforeDate != null) {
-            if (initialDate != null)
-              return initialDate.isAfter(disableBeforeDate);
-          }
-          return true;
-        }());
+  });
 
   @override
   _CalendarState createState() => _CalendarState();
@@ -777,13 +771,9 @@ class _CalendarState extends State<Calendar> {
   }
 
   void previousMonth() {
-    final dateTime = widget.disableBeforeDate ?? DateTime.now();
-    if (Utils.previousMonth(_selectedDate)
-        .isBefore(DateTime(dateTime.year, dateTime.month))) return;
     setState(() {
       _selectedDate = Utils.previousMonth(_selectedDate);
       var firstDateOfNewMonth = Utils.firstDayOfMonth(_selectedDate);
-      if (widget.disableBeforeToday) firstDateOfNewMonth = dateTime;
       var lastDateOfNewMonth = Utils.lastDayOfMonth(_selectedDate);
       updateSelectedRange(firstDateOfNewMonth, lastDateOfNewMonth);
       selectedMonthsDays = _daysInMonth(_selectedDate);
@@ -819,15 +809,9 @@ class _CalendarState extends State<Calendar> {
   }
 
   void previousWeek() {
-    final dateTime = widget.disableBeforeDate ?? DateTime.now();
-    if (Utils.previousWeek(_selectedDate)
-        .isBefore(DateTime(dateTime.year, dateTime.month))) return;
     setState(() {
       _selectedDate = Utils.previousWeek(_selectedDate);
-      var firstDayOfCurrentWeek = _firstDayOfWeek(_selectedDate,
-          disabledBeforeDate: widget.disableBeforeToday,
-          disabledAfterDate: widget.disableBeforeDate);
-
+      var firstDayOfCurrentWeek = _firstDayOfWeek(_selectedDate);
       var lastDayOfCurrentWeek = _lastDayOfWeek(_selectedDate);
       updateSelectedRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek);
       selectedWeekDays =
@@ -960,9 +944,7 @@ class _CalendarState extends State<Calendar> {
     }
   }
 
-  DateTime _firstDayOfWeek(DateTime date,
-      {bool disabledBeforeDate = false, DateTime? disabledAfterDate}) {
-    final disabledDate = disabledAfterDate ?? DateTime.now();
+  _firstDayOfWeek(DateTime date) {
     var day = DateTime.utc(
         _selectedDate.year, _selectedDate.month, _selectedDate.day, 12);
     if (widget.startOnMonday == true) {
@@ -971,10 +953,6 @@ class _CalendarState extends State<Calendar> {
       // if the selected day is a Sunday, then it is already the first day of week
       day = day.weekday == 7 ? day : day.subtract(Duration(days: day.weekday));
     }
-    if (day.isBefore(disabledDate))
-      return _firstDayOfWeek(day,
-          disabledBeforeDate: disabledBeforeDate,
-          disabledAfterDate: disabledDate);
     return day;
   }
 
