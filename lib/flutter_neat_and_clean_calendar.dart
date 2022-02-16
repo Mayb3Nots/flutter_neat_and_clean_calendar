@@ -776,9 +776,14 @@ class _CalendarState extends State<Calendar> {
         .isBefore(DateTime(dateTime.year, dateTime.month))) return;
     setState(() {
       _selectedDate = Utils.previousMonth(_selectedDate);
-      var firstDateOfNewMonth = widget.disableBeforeToday
-          ? dateTime
-          : Utils.firstDayOfMonth(_selectedDate);
+      var firstDateOfNewMonth = Utils.firstDayOfMonth(_selectedDate);
+      if (widget.disableBeforeToday) {
+        while (firstDateOfNewMonth.isBefore(dateTime)) {
+          firstDateOfNewMonth =
+              Utils.firstDayOfMonth(_selectedDate).add(const Duration(days: 1));
+        }
+      }
+
       var lastDateOfNewMonth = Utils.lastDayOfMonth(_selectedDate);
       updateSelectedRange(firstDateOfNewMonth, lastDateOfNewMonth);
       selectedMonthsDays = _daysInMonth(_selectedDate);
@@ -819,11 +824,11 @@ class _CalendarState extends State<Calendar> {
         .isBefore(DateTime(dateTime.year, dateTime.month))) return;
     setState(() {
       _selectedDate = Utils.previousWeek(_selectedDate);
-      late var firstDayOfCurrentWeek;
+      var firstDayOfCurrentWeek = _firstDayOfWeek(_selectedDate);
       if (widget.disableBeforeToday) {
-        while (_firstDayOfWeek(_selectedDate).isBefore(dateTime)) {
+        while (firstDayOfCurrentWeek.isBefore(dateTime)) {
           firstDayOfCurrentWeek =
-              _firstDayOfWeek(_selectedDate.add(const Duration(days: 1)));
+              _firstDayOfWeek(_selectedDate.add(const Duration(days: 7)));
         }
       }
       var lastDayOfCurrentWeek = _lastDayOfWeek(_selectedDate);
