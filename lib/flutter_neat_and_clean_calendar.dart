@@ -771,8 +771,9 @@ class _CalendarState extends State<Calendar> {
   }
 
   void previousMonth() {
+    final dateTime = widget.disableBeforeDate ?? DateTime.now();
     if (Utils.previousMonth(_selectedDate)
-        .isAfter(widget.disableBeforeDate ?? DateTime.now())) return;
+        .isAfter(DateTime(dateTime.year, dateTime.month))) return;
     setState(() {
       _selectedDate = Utils.previousMonth(_selectedDate);
       var firstDateOfNewMonth = Utils.firstDayOfMonth(_selectedDate);

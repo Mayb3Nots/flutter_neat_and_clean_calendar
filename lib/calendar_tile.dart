@@ -110,10 +110,10 @@ class NeatCleanCalendarTile extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                       color: isSelected && this.date != null
                           ? Theme.of(context).colorScheme.onPrimary
-                          : disabled
-                              ? Colors.grey // Disabled
-                              : Utils.isSameDay(this.date!, DateTime.now())
-                                  ? todayColor
+                          : Utils.isSameDay(this.date!, DateTime.now())
+                              ? todayColor
+                              : disabled
+                                  ? Colors.grey // Disabled
                                   : inMonth
                                       ? Theme.of(context)
                                           .colorScheme
